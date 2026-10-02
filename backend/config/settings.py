@@ -39,7 +39,6 @@ class Settings:
     ollama_model: str
     openai_api_key: str = field(repr=False)
     openai_model: str
-    admin_token: str = field(repr=False)   # protects state-changing API calls when set
     ca_bundle: str
     reports_dir: Path
     http_timeout_s: float = 20.0
@@ -72,7 +71,6 @@ def get_settings() -> Settings:
         ollama_model=os.getenv("OLLAMA_MODEL", "llama3.1"),
         openai_api_key=os.getenv("OPENAI_API_KEY", "").strip(),
         openai_model=os.getenv("OPENAI_MODEL", "").strip(),
-        admin_token=os.getenv("ADMIN_TOKEN", "").strip(),
         ca_bundle=ca_bundle,
         reports_dir=Path(os.getenv("REPORTS_DIR", str(PROJECT_ROOT / "reports"))),
     )

@@ -87,22 +87,10 @@ def test_news_audit_is_cached_until_the_data_changes(client, monkeypatch):
     assert len(calls) == 2 and after["by_provider"]["google_news_rss"]["rejected_at_collection"]["fetched"] == 3
 
 
-def test_admin_token_protects_actions_but_not_reading(client, monkeypatch):
-    from backend.config.settings import get_settings
-    monkeypatch.setenv("ADMIN_TOKEN", "test-admin-token")
-    get_settings.cache_clear()
-    try:
-        assert client.get("/api/auth").json() == {"actions_require_token": True}
-        assert client.get("/api/companies").status_code == 200                       # reading stays public
-        assert client.post("/api/parameters/x/activate").status_code == 401           # no token
-        assert client.post("/api/parameters/x/activate", headers={"X-Admin-Token": "wrong"}).status_code == 401
-        r = client.post("/api/parameters/x/activate", headers={"X-Admin-Token": "test-admin-token"})
-        assert r.status_code == 404                                                   # passed the guard
-        assert "test-admin-token" not in client.get("/api/config").text
-    finally:
-        monkeypatch.delenv("ADMIN_TOKEN")
-        get_settings.cache_clear()
-    assert client.get("/api/auth").json() == {"actions_require_token": False}         # local default: open
+def test_actions_need_no_token(client):
+    # the admin-token feature was removed: actions are open and the old endpoint is gone
+    assert client.post("/api/parameters/x/activate").status_code == 404           # reached the route
+    assert client.get("/api/auth").status_code in (404, 405)
 
 
 def test_seed_database_is_restored_only_when_missing(tmp_path, monkeypatch):

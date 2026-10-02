@@ -1,9 +1,6 @@
 """FastAPI application. Run: uvicorn backend.api.app:app --reload
 
 Deployment switches (environment variables, all optional; nothing changes locally when unset):
-  ADMIN_TOKEN               when set, every state-changing /api request (POST/PUT/PATCH/DELETE) must send
-                            the header `X-Admin-Token: <token>`. Reading stays public. Protects paid
-                            OpenAI calls and data-changing actions on a public deployment.
   SEED_DATABASE             path of a gzipped SQLite snapshot restored on first start when the SQLite
                             database file does not exist yet (ephemeral disks, e.g. Render free tier).
   AUTO_REFRESH_ON_START     "true": after start-up, refresh prices, collect news and make a fresh
@@ -13,7 +10,6 @@ from __future__ import annotations
 
 import gzip
 import hashlib
-import hmac
 import logging
 import os
 import shutil
@@ -21,8 +17,8 @@ import threading
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -34,7 +30,6 @@ from backend.services.orchestrator import bootstrap
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger(__name__)
-WRITE_METHODS = {"POST", "PUT", "PATCH", "DELETE"}
 
 
 def restore_seed_database() -> str | None:
@@ -97,22 +92,6 @@ app = FastAPI(title="NIFTY News to Volatility Predictor", version="1.0.0", lifes
 
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)   # large JSON (predictions, reports) compresses ~5-10x
-
-
-@app.middleware("http")
-async def admin_token_guard(request: Request, call_next):
-    token = get_settings().admin_token
-    if token and request.method in WRITE_METHODS and request.url.path.startswith("/api/"):
-        sent = request.headers.get("x-admin-token", "")
-        if not hmac.compare_digest(sent.encode(), token.encode()):
-            return JSONResponse({"detail": "admin token required for this action"}, status_code=401)
-    return await call_next(request)
-
-
-@app.get("/api/auth", include_in_schema=False)
-def auth_info():
-    """Tells the web app whether actions need an admin token (never reveals the token)."""
-    return {"actions_require_token": bool(get_settings().admin_token)}
 
 
 for r in (routes_news.router, routes_predictions.router, routes_backtest.router, routes_meta.router, routes_app.router):

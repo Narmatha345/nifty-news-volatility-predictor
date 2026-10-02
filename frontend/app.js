@@ -21,22 +21,13 @@ const ago = (iso) => {
   const h = Math.round(m / 60); if (h < 48) return `${h} h ago`;
   return `${Math.round(h / 24)} days ago`;
 };
-// Admin token (public deployments): actions need it, viewing does not. Kept only in this browser.
-const TOKEN_KEY = "nvp-admin-token";
-const getToken = () => { try { return localStorage.getItem(TOKEN_KEY) || ""; } catch { return ""; } };
-const setToken = (t) => { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch {} };
 /** opts.always: never dropped as stale (start-up calls that every page depends on). */
-async function api(path, opts = {}, retried = false) {
+async function api(path, opts = {}) {
   const gen = opts.always ? null : state.gen;
-  const headers = { "Content-Type": "application/json", ...(getToken() ? { "X-Admin-Token": getToken() } : {}) };
+  const headers = { "Content-Type": "application/json" };
   const { always, ...init } = opts;
   const res = await fetch(API + path, { ...init, headers });
   const body = res.headers.get("content-type")?.includes("json") ? await res.json() : await res.text();
-  if (res.status === 401 && !retried) {
-    const t = prompt("This action needs the admin token (ADMIN_TOKEN on the server). It is stored only in this browser.");
-    if (t) { setToken(t.trim()); return api(path, opts, true); }
-  }
-  if (res.status === 401) setToken("");
   if (!res.ok) throw new Error(body?.detail || body || res.statusText);
   // A page load that finishes after the user moved on must not paint over the new page: leave it pending.
   if (gen !== null && gen !== state.gen && (opts.method || "GET") === "GET") return new Promise(() => {});
@@ -697,7 +688,7 @@ async function loadReports() {
 // ============================================================ SETTINGS
 async function pageSettings() {
   setHead("Settings", "Index universe, model parameter sets, news providers, LLM validation and scheduled jobs.");
-  const [uni, params, sched, auth] = await Promise.all([api("/universe"), api("/parameters"), api("/schedule"), api("/auth")]);
+  const [uni, params, sched] = await Promise.all([api("/universe"), api("/parameters"), api("/schedule")]);
   const c = state.config;
   const memberRows = (ms) => ms.map((m) => `<tr><td><b>${esc(m.ticker)}</b></td><td>${esc(m.company)}</td><td class="num">${num(m.weight, 2)}</td><td>${esc(m.effective_from)}${m.effective_to ? " → " + esc(m.effective_to) : " → current"}</td><td>${esc(m.source_date || "")}</td></tr>`);
   const hist = uni.history.map((v) => `<details class="card"><summary><b>${esc(v.version)}</b> · ${esc(v.effective_from)}${v.effective_to ? " → " + esc(v.effective_to) : ""} · ${v.status === "confirmed" ? pill("confirmed", "var(--good)") : pill(v.status, "var(--serious)")}</summary>
@@ -708,11 +699,6 @@ async function pageSettings() {
   const provRows = (audit) => Object.entries(audit.by_provider).map(([p, v]) => `<tr><td><b>${esc(p)}</b></td><td>${pill("active", "var(--good)")}</td><td class="num">${v.articles.toLocaleString("en-IN")}</td><td class="small">${esc(v.timestamp_quality)}</td></tr>`)
     .concat(c.news_providers_skipped.map((p) => `<tr><td><b>${esc(p.split(" ")[0])}</b></td><td>${pill(p.includes("(") ? p.slice(p.indexOf("(") + 1, -1) : "skipped", "var(--muted)")}</td><td class="num">0</td><td class="small muted">Add its API key to .env to enable.</td></tr>`));
   $("#view").innerHTML = `
-    ${auth.actions_require_token ? `<div class="section-title"><h2>Admin access</h2><span class="muted small">needed for actions (collect, predict, validate, backtests, activation); viewing is public</span></div>
-    <div class="card"><div class="filters">
-      <label>Admin token <input id="tok" type="password" autocomplete="off" placeholder="${getToken() ? "stored in this browser" : "not set"}"></label>
-      <button id="tok-save" class="primary">Save</button><button id="tok-clear">Forget</button>
-      <span class="small">${getToken() ? pill("token stored in this browser", "var(--good)") : pill("no token stored", "var(--muted)")}</span></div></div>` : ""}
     <div class="section-title"><h2>Top-10 NIFTY universe</h2><span class="muted small">active on ${esc(uni.as_of)} · weights are reference data, not live values</span></div>
     <div class="card"><h3>${esc(uni.active.version)} ${pill("active", "var(--good)")}</h3><p class="small muted">${esc(uni.active.source || "")}</p>
       <div class="scroll">${tableHtml(["Ticker", "Company", { t: "Weight %", num: 1 }, "Effective", "Source date"], memberRows(uni.active.members), "", "stack")}</div></div>
@@ -736,10 +722,6 @@ async function pageSettings() {
     if (state.page !== page || !$("#prov-body")) return;
     $("#prov-body").innerHTML = tableHtml(["Provider", "Status", { t: "Articles", num: 1 }, "Timestamp quality"], provRows(audit), "", "stack");
   }).catch((e) => { if ($("#prov-body")) $("#prov-body").innerHTML = `<p class="missing">Could not load provider statistics: ${esc(e.message)}</p>`; });
-  if ($("#tok-save")) {
-    $("#tok-save").onclick = () => { const v = $("#tok").value.trim(); if (v) { setToken(v); status("Admin token saved in this browser."); reloadPage(); } };
-    $("#tok-clear").onclick = () => { setToken(""); status("Admin token removed from this browser."); reloadPage(); };
-  }
   document.querySelectorAll("[data-activate]").forEach((b) => (b.onclick = async () => {
     const v = b.dataset.activate;
     if (!confirm(`Activate parameter set ${v}? Live predictions will use it from the next run.`)) return;
@@ -756,6 +738,7 @@ async function sideFoot() {
     ${pill(`News: ${c.news_providers_active.join(", ")}`, "var(--s1)")}
     <span>Times in ${esc(c.display_timezone)}</span>`;
 }
+try { localStorage.removeItem("nvp-admin-token"); } catch {}   // left over from the removed admin-token feature
 const ready = (async function init() {
   try {
     state.config = await api("/config", { always: true });

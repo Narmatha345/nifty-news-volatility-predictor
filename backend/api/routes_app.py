@@ -72,9 +72,9 @@ def schedule_info() -> dict:
                 "note": "Windows Task Scheduler · jobs run only while this Windows user is logged on and the PC is awake."}
     auto = os.getenv("AUTO_REFRESH_ON_START", "").lower() in ("1", "true", "yes")
     note = ("No scheduler on this server. Prices, news and a fresh prediction are refreshed each time the server "
-            "starts; use the page actions (admin token) to refresh by hand. The scheduled 08:30 / 16:30 IST jobs "
+            "starts; use the page actions to refresh by hand. The scheduled 08:30 / 16:30 IST jobs "
             "run on the Windows PC (scripts/schedule_windows.ps1).") if auto else \
-           "No scheduler on this server. Use the page actions (admin token) or the CLI to refresh data."
+           "No scheduler on this server. Use the page actions or the CLI to refresh data."
     return {"mode": "startup_refresh" if auto else "manual", "jobs": [], "note": note,
             "startup_refresh": dict(STARTUP_REFRESH) or None}
 

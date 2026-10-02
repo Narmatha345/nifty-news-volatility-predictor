@@ -3,12 +3,10 @@
 #
 # Secrets are NOT in this file:
 #   OPENAI_API_KEY  sync: false   -> Render asks for it when the Blueprint is created
-#   ADMIN_TOKEN     generateValue -> Render generates it; copy it from the service's Environment tab
-#                                    and enter it once in the web app (Settings -> Admin access)
 #
 # Free plan notes: the disk is ephemeral and the service sleeps after ~15 min without traffic. On every
 # (re)start the bundled data snapshot is restored, then prices / news / a fresh prediction are refreshed
-# in the background (no OpenAI calls at start-up - validation stays a manual, admin-only action).
+# in the background (no OpenAI calls at start-up - validation runs only when someone clicks it).
 services:
   - type: web
     name: nifty-news-volatility-predictor
@@ -31,8 +29,6 @@ services:
         value: gpt-5.5
       - key: OPENAI_API_KEY
         sync: false
-      - key: ADMIN_TOKEN
-        generateValue: true
       - key: NEWS_PROVIDERS
         value: google_news_rss,publisher_rss,newsapi,gnews,marketaux
       - key: DISPLAY_TIMEZONE

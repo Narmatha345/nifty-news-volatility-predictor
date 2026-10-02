@@ -31,10 +31,10 @@ Docs: [Architecture](docs/ARCHITECTURE.md) · [Methodology & formulas](docs/METH
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Narmatha345/nifty-news-volatility-predictor)
 
 `render.yaml` defines one free web service. When you create it Render asks for **`OPENAI_API_KEY`**
-(enter your key there - it is never stored in the repository) and generates **`ADMIN_TOKEN`**.
-Viewing the app is public; every action (collect news, predict, validate with OpenAI, backtests,
-parameter activation) needs the admin token: copy it from the service's *Environment* tab and enter it
-once in the web app (*Settings → Admin access*, or when an action asks for it).
+(enter your key there - it is never stored in the repository).
+The deployed app is fully open: anyone with the link can view it and use every action (collect news,
+predict, validate with OpenAI, backtests, parameter activation). OpenAI validations are billed to your
+key, so set a monthly spending limit in the OpenAI dashboard.
 
 Free-plan behaviour: the disk is ephemeral and the service sleeps after ~15 minutes without traffic
 (the first request after that takes ~1 minute). On every start the bundled snapshot
