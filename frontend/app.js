@@ -3,7 +3,7 @@
    Pages: Overview (/), System 1 News & Sentiment (/system-1), System 2 Predictions (/system-2),
    System 3 Backtesting (/system-3), Settings (/settings). Client-side routing with real URLs. */
 const API = "/api";
-const state = { config: null, charts: {}, companies: [], tz: "Asia/Kolkata", page: null };
+const state = { config: null, charts: {}, companies: [], tz: "Asia/Kolkata", page: null, gen: 0 };   // gen: bumped on every page render
 
 // ============================================================ helpers
 const $ = (s, root = document) => root.querySelector(s);
@@ -25,9 +25,12 @@ const ago = (iso) => {
 const TOKEN_KEY = "nvp-admin-token";
 const getToken = () => { try { return localStorage.getItem(TOKEN_KEY) || ""; } catch { return ""; } };
 const setToken = (t) => { try { t ? localStorage.setItem(TOKEN_KEY, t) : localStorage.removeItem(TOKEN_KEY); } catch {} };
+/** opts.always: never dropped as stale (start-up calls that every page depends on). */
 async function api(path, opts = {}, retried = false) {
+  const gen = opts.always ? null : state.gen;
   const headers = { "Content-Type": "application/json", ...(getToken() ? { "X-Admin-Token": getToken() } : {}) };
-  const res = await fetch(API + path, { ...opts, headers });
+  const { always, ...init } = opts;
+  const res = await fetch(API + path, { ...init, headers });
   const body = res.headers.get("content-type")?.includes("json") ? await res.json() : await res.text();
   if (res.status === 401 && !retried) {
     const t = prompt("This action needs the admin token (ADMIN_TOKEN on the server). It is stored only in this browser.");
@@ -35,6 +38,8 @@ async function api(path, opts = {}, retried = false) {
   }
   if (res.status === 401) setToken("");
   if (!res.ok) throw new Error(body?.detail || body || res.statusText);
+  // A page load that finishes after the user moved on must not paint over the new page: leave it pending.
+  if (gen !== null && gen !== state.gen && (opts.method || "GET") === "GET") return new Promise(() => {});
   return body;
 }
 function status(msg, isErr = false) { const el = $("#status"); el.textContent = msg || ""; el.classList.toggle("err", !!isErr); }
@@ -162,6 +167,7 @@ function navigate(path) {
 async function render() {
   const path = PAGES[location.pathname] ? location.pathname : "/";
   state.page = path;
+  const gen = ++state.gen;
   Object.values(state.charts).forEach((c) => c.destroy());
   state.charts = {};
   document.querySelectorAll(".nav a").forEach((a) => {
@@ -171,8 +177,10 @@ async function render() {
   });
   status("");
   $("#view").innerHTML = '<div class="skeleton">Loading…</div>';
+  await ready;                          // configuration first (a click can arrive before start-up finishes)
+  if (gen !== state.gen) return;
   try { await PAGES[path].load(); }
-  catch (e) { $("#view").innerHTML = `<div class="card"><b>Could not load this page.</b><p class="missing">${esc(e.message)}</p></div>`; }
+  catch (e) { if (gen !== state.gen) return; console.error(e); $("#view").innerHTML = `<div class="card"><b>Could not load this page.</b><p class="missing">${esc(e.message)}</p></div>`; }
   window.scrollTo(0, 0);
 }
 async function reloadPage() { const y = window.scrollY; await PAGES[state.page].load(); window.scrollTo(0, y); }
@@ -731,12 +739,12 @@ async function sideFoot() {
     ${pill(`News: ${c.news_providers_active.join(", ")}`, "var(--s1)")}
     <span>Times in ${esc(c.display_timezone)}</span>`;
 }
-(async function init() {
+const ready = (async function init() {
   try {
-    state.config = await api("/config");
+    state.config = await api("/config", { always: true });
     state.tz = state.config.display_timezone;
-    state.companies = await api("/companies");
+    state.companies = await api("/companies", { always: true });
     sideFoot();
   } catch (e) { status("Error loading configuration: " + e.message, true); }
-  render();
 })();
+ready.then(render);
