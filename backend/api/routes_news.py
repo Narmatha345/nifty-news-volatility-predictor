@@ -157,12 +157,35 @@ def aggregate_now(as_of: str | None = None, db: Session = Depends(get_db)):
     return out
 
 
+_AUDIT_CACHE: dict[tuple, dict] = {}
+
+
+def _audit_fingerprint(db: Session) -> tuple:
+    """Cheap aggregate that changes whenever anything the audit reads changes (articles, their availability
+    fields, fetch logs, live runs, sentiment engine)."""
+    from backend.database.models import PredictionRun
+    arts = db.execute(select(func.count(NewsArticle.id), func.max(NewsArticle.id), func.max(NewsArticle.fetched_at),
+                             func.count(NewsArticle.availability_status), func.count(NewsArticle.first_usable_session),
+                             func.count(NewsArticle.duplicate_of))).one()
+    logs = db.execute(select(func.count(FetchLog.id), func.max(FetchLog.id))).one()
+    runs = db.scalar(select(func.count(PredictionRun.id)).where(PredictionRun.is_backtest.is_(False)))
+    return (*arts, *logs, runs, get_settings().sentiment_engine)
+
+
 @router.get("/news/audit")
 def news_audit(start: str | None = None, end: str | None = None, db: Session = Depends(get_db)):
-    """Availability audit: overall / by provider / by company / by trading date."""
+    """Availability audit: overall / by provider / by company / by trading date.
+    The full report reads every article (~10 s on a small server), so it is cached until the data changes."""
     from backend.api.schemas import parse_date
     from backend.system1_news.availability import audit_report
-    return audit_report(db, parse_date(start) if start else None, parse_date(end) if end else None)
+    key = (start, end, _audit_fingerprint(db))
+    if key not in _AUDIT_CACHE:
+        report = audit_report(db, parse_date(start) if start else None, parse_date(end) if end else None)
+        db.commit()   # audit_report fills missing availability fields; persist them before fingerprinting again
+        key = (start, end, _audit_fingerprint(db))
+        _AUDIT_CACHE.clear()   # keep only the latest result per process
+        _AUDIT_CACHE[key] = report
+    return _AUDIT_CACHE[key]
 
 
 @router.get("/news/stats")

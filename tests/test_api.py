@@ -57,6 +57,30 @@ def test_app_status_and_reports_endpoints(client):
     assert client.get("/api/reports/not-a-report.txt").status_code == 404
 
 
+def test_schedule_reports_how_this_deployment_refreshes(client):
+    sch = client.get("/api/schedule").json()
+    assert sch["mode"] in ("windows_task_scheduler", "startup_refresh", "manual") and sch["note"]
+    assert client.get("/api/status").json()["schedule"]["mode"] == sch["mode"]
+    if sch["mode"] != "windows_task_scheduler":
+        assert sch["jobs"] == []          # no fake "not registered" Windows jobs on a Linux server
+
+
+def test_news_audit_is_cached_until_the_data_changes(client, monkeypatch):
+    from datetime import datetime
+    from backend.database.db import session_scope
+    from backend.database.models import FetchLog
+    from backend.system1_news import availability
+    calls = []
+    real = availability.audit_report
+    monkeypatch.setattr(availability, "audit_report", lambda *a, **k: calls.append(1) or real(*a, **k))
+    first = client.get("/api/news/audit").json()
+    assert client.get("/api/news/audit").json() == first and len(calls) == 1      # served from the cache
+    with session_scope() as s:
+        s.add(FetchLog(provider="google_news_rss", query="q", started_at=datetime(2026, 10, 1), status="ok", items=3))
+    after = client.get("/api/news/audit").json()
+    assert len(calls) == 2 and after["by_provider"]["google_news_rss"]["rejected_at_collection"]["fetched"] == 3
+
+
 def test_admin_token_protects_actions_but_not_reading(client, monkeypatch):
     from backend.config.settings import get_settings
     monkeypatch.setenv("ADMIN_TOKEN", "test-admin-token")

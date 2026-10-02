@@ -28,6 +28,7 @@ from fastapi.staticfiles import StaticFiles
 from backend.api import routes_app, routes_backtest, routes_meta, routes_news, routes_predictions
 from backend.config.settings import PROJECT_ROOT, get_settings
 from backend.database.db import init_engine, session_scope
+from backend.services.llm import redact
 from backend.services.orchestrator import bootstrap
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -56,7 +57,10 @@ def restore_seed_database() -> str | None:
 def _refresh_in_background() -> None:
     def work():
         from backend.services import orchestrator
-        steps = {}
+        from backend.services.timeutil import iso_z, utcnow
+        steps = routes_app.STARTUP_REFRESH
+        steps.clear()
+        steps["started_at"] = iso_z(utcnow())
         for name, fn in (("prices", orchestrator.refresh_market_data), ("news", orchestrator.collect_and_analyze),
                          ("predict", orchestrator.predict)):
             try:
@@ -64,7 +68,13 @@ def _refresh_in_background() -> None:
                     out = fn(s)
                 steps[name] = "ok" if name != "predict" else f"ok ({out['run_id']}, target {out['target_session']})"
             except Exception as exc:     # a failing source must not take the web app down
-                steps[name] = f"failed: {type(exc).__name__}: {str(exc)[:200]}"
+                steps[name] = f"failed: {type(exc).__name__}: {redact(str(exc))[:200]}"
+        try:   # warm the availability-audit cache so the first Settings / System 1 visit is fast
+            with session_scope() as s:
+                routes_news.news_audit(None, None, s)
+        except Exception as exc:
+            log.warning("audit cache warm-up failed: %s", type(exc).__name__)
+        steps["finished_at"] = iso_z(utcnow())
         log.info("start-up refresh finished: %s", steps)
     threading.Thread(target=work, name="startup-refresh", daemon=True).start()
 

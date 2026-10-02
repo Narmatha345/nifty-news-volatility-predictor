@@ -61,9 +61,27 @@ def scheduled_jobs() -> list[dict]:
     return out
 
 
+STARTUP_REFRESH: dict = {}   # result of the AUTO_REFRESH_ON_START background refresh (filled by app.py)
+
+
+def schedule_info() -> dict:
+    """How this deployment keeps its data fresh. Windows: the two Task Scheduler jobs. Elsewhere (e.g. a
+    Render web service) there is no scheduler: data is refreshed on start-up or by the page actions."""
+    if os.name == "nt":
+        return {"mode": "windows_task_scheduler", "jobs": scheduled_jobs(),
+                "note": "Windows Task Scheduler · jobs run only while this Windows user is logged on and the PC is awake."}
+    auto = os.getenv("AUTO_REFRESH_ON_START", "").lower() in ("1", "true", "yes")
+    note = ("No scheduler on this server. Prices, news and a fresh prediction are refreshed each time the server "
+            "starts; use the page actions (admin token) to refresh by hand. The scheduled 08:30 / 16:30 IST jobs "
+            "run on the Windows PC (scripts/schedule_windows.ps1).") if auto else \
+           "No scheduler on this server. Use the page actions (admin token) or the CLI to refresh data."
+    return {"mode": "startup_refresh" if auto else "manual", "jobs": [], "note": note,
+            "startup_refresh": dict(STARTUP_REFRESH) or None}
+
+
 @router.get("/schedule")
 def schedule():
-    return {"jobs": scheduled_jobs(), "note": "Jobs run only while this Windows user is logged on and the PC is awake."}
+    return schedule_info()
 
 
 @router.get("/status")
@@ -123,7 +141,7 @@ def status(db: Session = Depends(get_db)):
         "system3": {"latest_backtest": bt_info},
         "config": {"active_parameters": pver, "universe_version": snap.version,
                    "universe_members": [m.ticker for m in snap.members], "display_timezone": s.display_timezone},
-        "schedule": scheduled_jobs(),
+        "schedule": schedule_info(),
     }
 
 

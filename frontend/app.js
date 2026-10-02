@@ -130,6 +130,22 @@ async function runAction(btn, label, fn) {
   finally { all.forEach((b) => (b.disabled = false)); }
 }
 
+/** Scheduled-jobs section for Overview and Settings. `sch` = /api/schedule (mode, jobs, note, startup_refresh). */
+function scheduleHtml(sch, withLog) {
+  if (sch.mode !== "windows_task_scheduler") {
+    const r = sch.startup_refresh;
+    const steps = r ? ["prices", "news", "predict"].map((k) => `<tr><td><b>${k}</b></td><td>${r[k] === undefined ? pill("running…", "var(--muted)")
+      : String(r[k]).startsWith("ok") ? pill("ok", "var(--good)") : pill("failed", "var(--critical)")}</td><td class="small">${esc(r[k] ?? "")}</td></tr>`) : [];
+    return `<div class="card"><p class="small">${esc(sch.note)}</p>${r ? `<p class="small muted">Last start-up refresh: ${fmtTime(r.started_at)}${r.finished_at ? " → " + fmtTime(r.finished_at) : " (still running)"}</p>
+      <div class="scroll">${tableHtml(["Step", "Result", "Detail"], steps, "", "stack")}</div>` : ""}</div>`;
+  }
+  const jobs = sch.jobs.map((j) => `<tr><td><b>${esc(j.task)}</b><div class="muted small">${esc(j.task === "NiftyNews-PreMarket" ? "08:30 IST · collect → predict → LLM review" : "16:30 IST · prices → actual outcomes")}</div></td>
+      <td>${j.registered ? pill(j.status || "registered", "var(--good)") : pill("not registered", "var(--serious)")}</td>
+      <td>${esc(j.next_run || "—")}</td><td>${esc(j.last_run || "—")}</td><td>${esc(j.last_result ?? "—")}</td>
+      ${withLog ? `<td>${j.log_updated ? `${ago(j.log_updated)}<details><summary class="small">log</summary><pre class="log">${esc(j.log_tail || "")}</pre></details>` : '<span class="muted">no log yet</span>'}</td>` : ""}</tr>`);
+  return `<div class="card"><div class="scroll">${tableHtml(["Job", "Status", "Next run", "Last run", "Last result"].concat(withLog ? ["Log"] : []), jobs, "", "stack")}</div></div>`;
+}
+
 // ============================================================ router
 const PAGES = {
   "/": { title: "Overview", load: pageOverview },
@@ -185,10 +201,6 @@ async function pageOverview() {
     : pill("does not beat the no-change baseline", "var(--serious)");
   const sysCard = (n, title, href, body, open) => `<div class="card system-card"><div class="head"><span class="badge-num">${n}</span><div><h2>${title}</h2></div></div>${body}
     <div class="go"><a class="btn-link" href="${href}" data-link>${open} →</a></div></div>`;
-  const jobs = (s.schedule || []).map((j) => `<tr><td><b>${esc(j.task)}</b><div class="muted small">${esc(j.task === "NiftyNews-PreMarket" ? "08:30 IST · collect → predict → LLM review" : "16:30 IST · prices → actual outcomes")}</div></td>
-      <td>${j.registered ? pill(j.status || "registered", "var(--good)") : pill("not registered", "var(--serious)")}</td>
-      <td>${esc(j.next_run || "—")}</td><td>${esc(j.last_run || "—")}</td><td>${esc(j.last_result ?? "—")}</td>
-      <td>${j.log_updated ? `${ago(j.log_updated)}<details><summary class="small">log</summary><pre class="log">${esc(j.log_tail || "")}</pre></details>` : '<span class="muted">no log yet</span>'}</td></tr>`);
   $("#view").innerHTML = `
     <div class="grid3">
       ${sysCard(1, "News collector & sentiment", "/system-1", `<dl>
@@ -213,8 +225,8 @@ async function pageOverview() {
         <dt>Verdict</dt><dd>${btVerdict}</dd>
         <dt>Tuning</dt><dd class="small">${esc(bt.tuning_reason || "not tuned")}</dd></dl>` : '<p class="missing">No backtests yet.</p>', "Open System 3")}
     </div>
-    <div class="section-title"><h2>Scheduled jobs</h2><span class="muted small">Windows Task Scheduler · run only while this user is logged on</span></div>
-    <div class="card"><div class="scroll">${tableHtml(["Job", "Status", "Next run", "Last run", "Last result", "Log"], jobs, "", "stack")}</div></div>
+    <div class="section-title"><h2>${s.schedule.mode === "windows_task_scheduler" ? "Scheduled jobs" : "Data refresh"}</h2></div>
+    ${scheduleHtml(s.schedule, true)}
     <div class="section-title"><h2>Configuration</h2><a href="/settings" data-link class="small">Settings →</a></div>
     <div class="tiles">
       ${tile("Active parameters", esc(s.config.active_parameters), "System 2 model settings")}
@@ -660,7 +672,7 @@ async function loadReports() {
 // ============================================================ SETTINGS
 async function pageSettings() {
   setHead("Settings", "Index universe, model parameter sets, news providers, LLM validation and scheduled jobs.");
-  const [uni, params, sched, audit] = await Promise.all([api("/universe"), api("/parameters"), api("/schedule"), api("/news/audit")]);
+  const [uni, params, sched, auth] = await Promise.all([api("/universe"), api("/parameters"), api("/schedule"), api("/auth")]);
   const c = state.config;
   const memberRows = (ms) => ms.map((m) => `<tr><td><b>${esc(m.ticker)}</b></td><td>${esc(m.company)}</td><td class="num">${num(m.weight, 2)}</td><td>${esc(m.effective_from)}${m.effective_to ? " → " + esc(m.effective_to) : " → current"}</td><td>${esc(m.source_date || "")}</td></tr>`);
   const hist = uni.history.map((v) => `<details class="card"><summary><b>${esc(v.version)}</b> · ${esc(v.effective_from)}${v.effective_to ? " → " + esc(v.effective_to) : ""} · ${v.status === "confirmed" ? pill("confirmed", "var(--good)") : pill(v.status, "var(--serious)")}</summary>
@@ -668,10 +680,8 @@ async function pageSettings() {
   const paramRows = params.map((p) => `<tr><td><b>${esc(p.version)}</b></td><td>${p.status === "active" ? pill("active", "var(--good)") : pill(p.status, "var(--muted)")}</td>
       <td>${esc(p.params?.system2?.model || "factor")} · ${esc(p.params?.system2?.sentiment_input || "raw")} sentiment</td><td>${fmtTime(p.created_at)}</td>
       <td class="small">${esc(p.notes || "")}</td><td>${p.status === "active" ? "" : `<button data-activate="${esc(p.version)}">Activate</button>`}</td></tr>`);
-  const prov = Object.entries(audit.by_provider).map(([p, v]) => `<tr><td><b>${esc(p)}</b></td><td>${pill("active", "var(--good)")}</td><td class="num">${v.articles.toLocaleString("en-IN")}</td><td class="small">${esc(v.timestamp_quality)}</td></tr>`)
+  const provRows = (audit) => Object.entries(audit.by_provider).map(([p, v]) => `<tr><td><b>${esc(p)}</b></td><td>${pill("active", "var(--good)")}</td><td class="num">${v.articles.toLocaleString("en-IN")}</td><td class="small">${esc(v.timestamp_quality)}</td></tr>`)
     .concat(c.news_providers_skipped.map((p) => `<tr><td><b>${esc(p.split(" ")[0])}</b></td><td>${pill(p.includes("(") ? p.slice(p.indexOf("(") + 1, -1) : "skipped", "var(--muted)")}</td><td class="num">0</td><td class="small muted">Add its API key to .env to enable.</td></tr>`));
-  const jobs = sched.jobs.map((j) => `<tr><td><b>${esc(j.task)}</b></td><td>${j.registered ? pill(j.status || "registered", "var(--good)") : pill("not registered", "var(--serious)")}</td><td>${esc(j.next_run || "—")}</td><td>${esc(j.last_run || "—")}</td><td>${esc(j.last_result ?? "—")}</td></tr>`);
-  const auth = await api("/auth");
   $("#view").innerHTML = `
     ${auth.actions_require_token ? `<div class="section-title"><h2>Admin access</h2><span class="muted small">needed for actions (collect, predict, validate, backtests, activation); viewing is public</span></div>
     <div class="card"><div class="filters">
@@ -686,15 +696,21 @@ async function pageSettings() {
     <div class="section-title"><h2>Model parameter sets</h2><span class="muted small">activation is always explicit</span></div>
     <div class="card"><div class="scroll">${tableHtml(["Version", "Status", "Model", "Created", "Notes", ""], paramRows, "", "stack")}</div></div>
     <div class="section-title"><h2>News providers</h2></div>
-    <div class="card"><div class="scroll">${tableHtml(["Provider", "Status", { t: "Articles", num: 1 }, "Timestamp quality"], prov, "", "stack")}</div></div>
+    <div class="card"><div class="scroll" id="prov-body"><div class="skeleton">Loading provider statistics…</div></div></div>
     <div class="section-title"><h2>LLM validation</h2></div>
     <div class="tiles">
       ${tile("Provider", `<span style="font-size:16px">${esc(PROVIDER_LABEL[c.llm_provider] || c.llm_provider)}</span>`, "LLM_PROVIDER in .env")}
       ${tile("Model", `<span style="font-size:16px">${esc(c.llm_model || "not set")}</span>`, "OPENAI_MODEL in .env")}
       ${tile("Status", c.llm_configured === false ? pill("not configured", "var(--serious)") : pill("configured", "var(--good)"), esc(c.llm_status || "API key stored in .env (never shown)"))}
     </div>
-    <div class="section-title"><h2>Scheduled jobs</h2><span class="muted small">create / remove: <code>scripts\\schedule_windows.ps1 [-Remove]</code></span></div>
-    <div class="card"><div class="scroll">${tableHtml(["Job", "Status", "Next run", "Last run", "Last result"], jobs, "", "stack")}</div></div>`;
+    <div class="section-title"><h2>${sched.mode === "windows_task_scheduler" ? "Scheduled jobs" : "Data refresh"}</h2>${sched.mode === "windows_task_scheduler" ? `<span class="muted small">create / remove: <code>scripts\\schedule_windows.ps1 [-Remove]</code></span>` : ""}</div>
+    ${scheduleHtml(sched, false)}`;
+  // The availability audit reads every article; load it after the rest of the page is on screen.
+  const page = state.page;
+  api("/news/audit").then((audit) => {
+    if (state.page !== page || !$("#prov-body")) return;
+    $("#prov-body").innerHTML = tableHtml(["Provider", "Status", { t: "Articles", num: 1 }, "Timestamp quality"], provRows(audit), "", "stack");
+  }).catch((e) => { if ($("#prov-body")) $("#prov-body").innerHTML = `<p class="missing">Could not load provider statistics: ${esc(e.message)}</p>`; });
   if ($("#tok-save")) {
     $("#tok-save").onclick = () => { const v = $("#tok").value.trim(); if (v) { setToken(v); status("Admin token saved in this browser."); reloadPage(); } };
     $("#tok-clear").onclick = () => { setToken(""); status("Admin token removed from this browser."); reloadPage(); };
