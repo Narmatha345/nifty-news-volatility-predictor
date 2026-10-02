@@ -12,6 +12,7 @@ Deployment switches (environment variables, all optional; nothing changes locall
 from __future__ import annotations
 
 import gzip
+import hashlib
 import hmac
 import logging
 import os
@@ -21,7 +22,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -121,10 +122,20 @@ for r in (routes_news.router, routes_predictions.router, routes_backtest.router,
 PAGES = ("overview", "system-1", "system-2", "system-3", "settings")
 
 
+def _asset_version(name: str) -> str:
+    return hashlib.sha256((PROJECT_ROOT / "frontend" / name).read_bytes()).hexdigest()[:10]
+
+
 def _page():
-    return FileResponse(PROJECT_ROOT / "frontend" / "index.html", headers={"Cache-Control": "no-cache"})
+    """The app shell. styles.css / app.js get a content-hash query string, so after an update a browser
+    never combines the new page with a stale cached stylesheet or script."""
+    html = (PROJECT_ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    for name in ("styles.css", "app.js"):
+        html = html.replace(f'"/{name}"', f'"/{name}?v={_asset_version(name)}"')
+    return HTMLResponse(html, headers={"Cache-Control": "no-cache"})
 
 
+app.add_api_route("/", _page, include_in_schema=False)
 for _p in PAGES:
     app.add_api_route(f"/{_p}", _page, include_in_schema=False)
 

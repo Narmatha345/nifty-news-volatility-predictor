@@ -151,6 +151,23 @@ function scheduleHtml(sch, withLog) {
   return `<div class="card"><div class="scroll">${tableHtml(["Job", "Status", "Next run", "Last run", "Last result"].concat(withLog ? ["Log"] : []), jobs, "", "stack")}</div></div>`;
 }
 
+// ============================================================ theme
+// "system" follows the device; "light"/"dark" are stored in this browser (applied before paint in index.html).
+const THEME_KEY = "nvp-theme";
+const getTheme = () => { try { return localStorage.getItem(THEME_KEY) || "system"; } catch { return "system"; } };
+function applyTheme(choice, redraw = true) {
+  if (choice === "light" || choice === "dark") document.documentElement.dataset.theme = choice;
+  else delete document.documentElement.dataset.theme;
+  try { choice === "system" ? localStorage.removeItem(THEME_KEY) : localStorage.setItem(THEME_KEY, choice); } catch {}
+  document.querySelectorAll("[data-theme-set]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.themeSet === choice)));
+  if (redraw && Object.keys(state.charts).length) redrawCharts();
+}
+/** Charts read their colours when drawn: redraw the current page in the new theme, keeping the scroll position. */
+function redrawCharts() { if (state.page) reloadPage().catch(() => {}); }
+document.querySelectorAll("[data-theme-set]").forEach((b) => (b.onclick = () => applyTheme(b.dataset.themeSet)));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if (getTheme() === "system" && Object.keys(state.charts).length) redrawCharts(); });
+applyTheme(getTheme(), false);
+
 // ============================================================ router
 const PAGES = {
   "/": { title: "Overview", load: pageOverview },

@@ -45,6 +45,12 @@ def test_dashboard_served(client):
         r = client.get(path)
         assert r.status_code == 200 and 'id="view"' in r.text and "/app.js" in r.text, path
     assert client.get("/app.js").status_code == 200 and client.get("/styles.css").status_code == 200
+    shell = client.get("/").text            # light / dark / system theme switch, applied before first paint
+    assert all(f'data-theme-set="{t}"' in shell for t in ("system", "light", "dark")) and "nvp-theme" in shell
+    assert ':root[data-theme="dark"]' in client.get("/styles.css").text
+    import re                               # assets are versioned, so a stale cached stylesheet is never used
+    css_v, js_v = re.search(r'/styles\.css\?v=(\w+)', shell), re.search(r'/app\.js\?v=(\w+)', shell)
+    assert css_v and js_v and client.get(f"/styles.css?v={css_v[1]}").status_code == 200
 
 
 def test_app_status_and_reports_endpoints(client):
