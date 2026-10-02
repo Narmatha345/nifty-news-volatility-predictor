@@ -1,0 +1,3 @@
+# Optional: transformer-based financial sentiment (SENTIMENT_ENGINE=finbert)
+transformers>=4.40
+torch>=2.2

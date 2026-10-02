@@ -1,0 +1,155 @@
+# Stock universe reference data. Two parts:
+#
+#   companies          INSTRUMENT CATALOG (name, symbols, sector, aliases for news matching). Being in
+#                      the catalog does NOT make a company part of the universe.
+#   universe_versions  DATE-AWARE MEMBERSHIP + WEIGHTS. Each version has an effective_from date, a
+#                      source and a status. For a date d the universe is the CONFIRMED version with the
+#                      latest effective_from <= d (and effective_to empty or >= d). Historical periods
+#                      therefore keep their own membership and weights; today's weights are never
+#                      applied retrospectively.
+#
+# Versions are seeded into `universe_members` by `python -m backend.cli seed-universe` and are
+# IMMUTABLE once stored (edit by adding a new version). The only change allowed afterwards is an
+# explicit confirmation: `python -m backend.cli universe --confirm <version>`.
+#
+# WEIGHTS ARE REFERENCE DATA, NOT LIVE VALUES. NSE does not publish constituent weights through a
+# free API; they drift daily with prices. The NIFTY score only uses them relative to each other.
+
+index:
+  name: NIFTY 50
+  yahoo_symbol: "^NSEI"
+
+universe_versions:
+  - version: legacy-approx-2025-06-30
+    status: confirmed          # the configuration the project has used since its start
+    effective_from: "2020-01-01"
+    effective_to: null
+    source: >-
+      Initial project configuration. Weights approximate as of 2025-06-30 and NOT verified against an
+      NSE factsheet; membership as configured by the project owner.
+    source_date: "2025-06-30"
+    members:
+      - {ticker: HDFCBANK, weight: 13.0}
+      - {ticker: ICICIBANK, weight: 9.0}
+      - {ticker: RELIANCE, weight: 8.6}
+      - {ticker: INFY, weight: 4.9}
+      - {ticker: BHARTIARTL, weight: 4.6}
+      - {ticker: LT, weight: 3.8}
+      - {ticker: ITC, weight: 3.4}
+      - {ticker: SBIN, weight: 3.1}
+      - {ticker: TCS, weight: 2.9}
+      - {ticker: AXISBANK, weight: 2.9}
+
+  - version: nse-factsheet-2026-09-30
+    status: confirmed   # confirmed by the project owner on 2026-10-02 (membership change: -ITC -TCS +KOTAKBANK +M&M)
+    effective_from: "2026-09-30"
+    effective_to: null
+    source: >-
+      NSE Indices "NIFTY 50" factsheet (Indexogram) dated 2026-09-30, table "Top constituents by
+      weightage" (https://www.niftyindices.com/Factsheet/ind_nifty50.pdf, downloaded 2026-10-02).
+      Membership and weights read from that table.
+    source_date: "2026-09-30"
+    members:
+      - {ticker: HDFCBANK, weight: 10.38}
+      - {ticker: ICICIBANK, weight: 9.05}
+      - {ticker: RELIANCE, weight: 7.58}
+      - {ticker: BHARTIARTL, weight: 5.10}
+      - {ticker: LT, weight: 4.20}
+      - {ticker: SBIN, weight: 3.79}
+      - {ticker: AXISBANK, weight: 3.37}
+      - {ticker: INFY, weight: 3.35}
+      - {ticker: KOTAKBANK, weight: 2.93}
+      - {ticker: "M&M", weight: 2.52}
+
+companies:
+  - name: HDFC Bank
+    ticker: HDFCBANK
+    yahoo_symbol: HDFCBANK.NS
+    sector: Financials
+    aliases: ["HDFC Bank", "HDFCBANK"]
+    exclude_patterns: ["HDFC Life", "HDFC AMC", "HDFC Asset Management", "HDFC Mutual Fund", "HDFC Ergo", "HDFC Securities", "HDFC Credila"]
+
+  - name: ICICI Bank
+    ticker: ICICIBANK
+    yahoo_symbol: ICICIBANK.NS
+    sector: Financials
+    aliases: ["ICICI Bank", "ICICIBANK"]
+    exclude_patterns: ["ICICI Prudential", "ICICI Lombard", "ICICI Securities", "ICICI Pru"]
+
+  - name: Reliance Industries
+    ticker: RELIANCE
+    yahoo_symbol: RELIANCE.NS
+    sector: Energy
+    aliases: ["Reliance Industries", "RIL", "Reliance Jio", "Jio Platforms", "Reliance Retail", "Mukesh Ambani"]
+    case_sensitive_aliases: ["RIL"]
+    exclude_patterns: ["Reliance Power", "Reliance Infrastructure", "Reliance Infra", "Reliance Capital", "Reliance Communications", "Reliance Home Finance", "Reliance General Insurance", "Reliance Nippon"]
+
+  - name: Infosys
+    ticker: INFY
+    yahoo_symbol: INFY.NS
+    sector: Information Technology
+    aliases: ["Infosys", "INFY"]
+    case_sensitive_aliases: ["INFY"]
+    exclude_patterns: []
+
+  - name: Bharti Airtel
+    ticker: BHARTIARTL
+    yahoo_symbol: BHARTIARTL.NS
+    sector: Telecommunication
+    aliases: ["Bharti Airtel", "Airtel", "BHARTIARTL"]
+    exclude_patterns: ["Bharti Hexacom", "Airtel Africa"]
+
+  - name: Larsen & Toubro
+    ticker: LT
+    yahoo_symbol: LT.NS
+    sector: Industrials
+    aliases: ["Larsen & Toubro", "Larsen and Toubro", "L&T"]
+    case_sensitive_aliases: ["L&T"]
+    exclude_patterns: ["L&T Finance", "L&T Technology Services", "LTIMindtree", "L&T Mutual Fund", "LTTS"]
+
+  - name: ITC
+    ticker: ITC
+    yahoo_symbol: ITC.NS
+    sector: Consumer Staples
+    aliases: ["ITC Ltd", "ITC Limited", "ITC"]
+    case_sensitive_aliases: ["ITC"]
+    exclude_patterns: ["ITC Hotels"]
+
+  - name: State Bank of India
+    ticker: SBIN
+    yahoo_symbol: SBIN.NS
+    sector: Financials
+    aliases: ["State Bank of India", "SBI", "SBIN"]
+    case_sensitive_aliases: ["SBI"]
+    exclude_patterns: ["SBI Life", "SBI Card", "SBI Cards", "SBI Mutual Fund", "SBI Funds", "SBI General"]
+
+  - name: Tata Consultancy Services
+    ticker: TCS
+    yahoo_symbol: TCS.NS
+    sector: Information Technology
+    aliases: ["Tata Consultancy Services", "TCS"]
+    case_sensitive_aliases: ["TCS"]
+    exclude_patterns: []
+
+  - name: Axis Bank
+    ticker: AXISBANK
+    yahoo_symbol: AXISBANK.NS
+    sector: Financials
+    aliases: ["Axis Bank", "AXISBANK"]
+    exclude_patterns: ["Axis Mutual Fund", "Axis Securities", "Axis Max Life"]
+
+  # Members from the 2026-09-30 factsheet version onwards (prices + news backfilled 2026-10-02).
+  - name: Kotak Mahindra Bank
+    ticker: KOTAKBANK
+    yahoo_symbol: KOTAKBANK.NS
+    sector: Financials
+    aliases: ["Kotak Mahindra Bank", "Kotak Bank", "KOTAKBANK"]
+    exclude_patterns: ["Kotak Securities", "Kotak Mahindra AMC", "Kotak Mutual Fund", "Kotak Life", "Kotak Mahindra Life", "Kotak General", "Kotak Mahindra Capital", "Kotak Alternate"]
+
+  - name: Mahindra & Mahindra
+    ticker: "M&M"
+    yahoo_symbol: "M&M.NS"
+    sector: Automobile
+    aliases: ["Mahindra & Mahindra", "Mahindra and Mahindra", "M&M"]
+    case_sensitive_aliases: ["M&M"]
+    exclude_patterns: ["Mahindra Finance", "Mahindra & Mahindra Financial", "M&M Financial", "Tech Mahindra", "Mahindra Lifespace", "Mahindra Logistics", "Mahindra Holidays", "Kotak Mahindra"]

@@ -1,0 +1,165 @@
+# News event types, their trigger keywords, event strength and persistence.
+#
+#   scope:            company -> needs a detected company; macro -> market-wide
+#   base_strength:    0..1, how market-moving this type of event typically is (used as a weight)
+#   half_life_days:   how fast the sentiment of this type of news decays (aggregation recency)
+#
+# Matching is case-insensitive on word boundaries. The highest-strength category matched in the
+# TITLE wins (then body matches). base_strength / half_life values are configurable priors, not
+# fitted values; System 3 reports whether the resulting signal carries information.
+#
+# `price_action` is not keyword-driven: headlines that only REPORT a share-price move
+# ("X shares fall 3%", "hits 52-week high") are detected in relevance.py. Their wording describes
+# a move that is already in the previous close, so they are not treated as new information
+# (see system1.price_report_weight).
+
+categories:
+  # ---------------- company events ----------------
+  earnings:
+    scope: company
+    base_strength: 1.0
+    half_life_days: 10
+    keywords: [quarterly results, q1 results, q2 results, q3 results, q4 results, earnings, results, eps,
+               beats estimates, misses estimates, earnings call]
+  profit:
+    scope: company
+    base_strength: 1.0
+    half_life_days: 10
+    keywords: [net profit, profit, pat, bottomline, ebitda, margin, margins, net loss, loss, net interest margin]
+  revenue:
+    scope: company
+    base_strength: 0.9
+    half_life_days: 10
+    keywords: [revenue, revenues, sales, topline, total income, net interest income, nii, deal wins tcv,
+               subscriber, subscribers, arpu]
+  guidance:
+    scope: company
+    base_strength: 0.9
+    half_life_days: 20
+    keywords: [guidance, outlook, forecast, projection, expects growth, revenue guidance, margin guidance]
+  contract:
+    scope: company
+    base_strength: 0.7
+    half_life_days: 10
+    keywords: [contract, contracts, deal, deal win, tender, partnership, agreement, mou, joint venture]
+  order:
+    scope: company
+    base_strength: 0.7
+    half_life_days: 10
+    keywords: [order, orders, order book, order inflow, order win, bags]
+  regulatory:
+    scope: company
+    base_strength: 0.9
+    half_life_days: 20
+    keywords: [regulatory action, penalty, fine, fined, sebi, ban, probe, investigation, lawsuit, court,
+               tribunal, nclt, show cause, compliance, licence, license, raid, tax demand, gst notice,
+               regulator, cci]
+  management:
+    scope: company
+    base_strength: 0.6
+    half_life_days: 10
+    keywords: [ceo, md, chairman, resigns, resignation, appoints, appointment, succession, board,
+               managing director, chief executive, cfo]
+  m_and_a:
+    scope: company
+    base_strength: 0.8
+    half_life_days: 15
+    keywords: [merger, acquisition, acquire, acquires, acquired, demerger, stake, stake sale, divestment,
+               takeover, buyout, amalgamation]
+  corporate_action:
+    scope: company
+    base_strength: 0.6
+    half_life_days: 15
+    keywords: [buyback, dividend, bonus issue, stock split, rights issue, record date, ex-date]
+  debt:
+    scope: company
+    base_strength: 0.6
+    half_life_days: 15
+    keywords: [debt, borrowing, borrowings, bond issue, bonds, ncd, ncds, loan, refinance, fundraise,
+               fund raise, qip, raise funds, deleveraging]
+  credit:
+    scope: company
+    base_strength: 0.8
+    half_life_days: 15
+    keywords: [credit rating, rating upgrade, rating downgrade, moody's, fitch, crisil, icra, npa, gross npa,
+               net npa, slippages, provisions, asset quality, bad loans, credit cost, credit growth]
+  analyst_rating:
+    scope: company
+    base_strength: 0.5
+    half_life_days: 5
+    keywords: [upgrade, downgrade, target price, rating, overweight, underweight, outperform, underperform,
+               buy rating, sell rating, brokerage, price target]
+
+  # ---------------- macro events ----------------
+  interest_rate:
+    scope: macro
+    base_strength: 1.0
+    half_life_days: 45
+    keywords: [rbi, repo rate, reverse repo, monetary policy, mpc, rate cut, rate hike, interest rate,
+               interest rates, federal reserve, fed, fomc, bond yields, treasury yield, liquidity, crr, slr]
+  inflation:
+    scope: macro
+    base_strength: 1.0
+    half_life_days: 45
+    keywords: [inflation, cpi, wpi, retail inflation, wholesale inflation, food inflation, us inflation]
+  gdp:
+    scope: macro
+    base_strength: 0.8
+    half_life_days: 45
+    keywords: [gdp, iip, pmi, industrial output, economic growth, recession, slowdown, core sector, gva]
+  currency:
+    scope: macro
+    base_strength: 0.7
+    half_life_days: 20
+    keywords: [rupee, dollar index, forex, forex reserves, exchange rate, usd/inr]
+  fund_flows:
+    scope: macro
+    base_strength: 0.6
+    half_life_days: 10
+    keywords: [fii, fpi, fiis, fpis, foreign investors, dii, diis, foreign inflows, foreign outflows]
+  commodity:
+    scope: macro
+    base_strength: 0.7
+    half_life_days: 20
+    keywords: [crude oil, brent, oil prices, crude prices, opec, gold prices, commodity, metal prices,
+               natural gas]
+  government_policy:
+    scope: macro
+    base_strength: 0.8
+    half_life_days: 60
+    keywords: [union budget, budget, fiscal deficit, tax, gst, capex, government policy, disinvestment,
+               subsidy, finance ministry, finance minister, pli scheme, cabinet approves]
+  geopolitical:
+    scope: macro
+    base_strength: 0.7
+    half_life_days: 20
+    keywords: [geopolitical, war, sanctions, tariff, tariffs, trade war, trade deal, conflict, ceasefire,
+               border tensions, election, elections]
+  market_wrap:
+    scope: macro
+    base_strength: 0.3
+    half_life_days: 2
+    keywords: [sensex, nifty, stock market today, markets close, closing bell, opening bell, market wrap]
+
+# Search queries System 1 sends to every news provider for market-wide news
+# (company queries are generated from universe aliases).
+macro_queries:
+  - RBI repo rate
+  - RBI monetary policy
+  - India inflation CPI
+  - India GDP growth
+  - Sensex Nifty market
+  - rupee dollar
+  - FII FPI Indian equities
+  - crude oil prices India
+  - India budget fiscal deficit
+  - US Federal Reserve rates
+
+# Category used when an article mentions a company but matches no category keyword.
+default_company_category: other
+default_company_strength: 0.5
+default_company_half_life_days: 5
+# Category for headlines that only report a share-price move (detected in relevance.py).
+price_action_category: price_action
+price_action_strength: 0.3
+price_action_half_life_days: 2

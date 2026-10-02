@@ -1,0 +1,1516 @@
+{
+  "generated_for": {
+    "start": null,
+    "end": null,
+    "engine": "lexicon-v3"
+  },
+  "overall": {
+    "articles": 22620,
+    "duplicates": 1007,
+    "duplicate_rate": 0.0445,
+    "precision": {
+      "exact": 2735,
+      "minute": 58,
+      "hour": 87,
+      "date_only": 19740,
+      "unknown": 0
+    },
+    "precision_share": {
+      "exact": 0.1209,
+      "minute": 0.0026,
+      "hour": 0.0038,
+      "date_only": 0.8727,
+      "unknown": 0.0
+    },
+    "timezone_unknown": 0,
+    "status": {
+      "verified_pre_market": 667,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2213,
+      "unknown": 19740
+    },
+    "verified_pre_market_share": 0.0295,
+    "unknown_share": 0.8727,
+    "post_event_share": 0.0978,
+    "rejected_future": 0,
+    "rejected_missing_timestamp": 0,
+    "rejected_note": "rejections are counted from the fetch log (Phase 3 onwards; earlier collections did not record them)"
+  },
+  "by_provider": {
+    "google_news_rss": {
+      "articles": 22449,
+      "duplicates": 939,
+      "duplicate_rate": 0.0418,
+      "precision": {
+        "exact": 2565,
+        "minute": 57,
+        "hour": 87,
+        "date_only": 19740,
+        "unknown": 0
+      },
+      "precision_share": {
+        "exact": 0.1143,
+        "minute": 0.0025,
+        "hour": 0.0039,
+        "date_only": 0.8793,
+        "unknown": 0.0
+      },
+      "timezone_unknown": 0,
+      "status": {
+        "verified_pre_market": 555,
+        "published_before_cutoff": 0,
+        "collected_after_event": 2154,
+        "unknown": 19740
+      },
+      "verified_pre_market_share": 0.0247,
+      "unknown_share": 0.8793,
+      "post_event_share": 0.096,
+      "rejected_at_collection": {
+        "future": 0,
+        "missing_timestamp": 0,
+        "invalid": 0,
+        "duplicates_at_collection": 3221,
+        "fetched": 30025
+      },
+      "timestamp_quality": "RFC-822 pubDate in GMT. Recent items: to the second. Older/backfilled items: date only (rendered 07:00:00 GMT). Headline only, no article text.",
+      "documented_timezone": "GMT"
+    },
+    "publisher_rss": {
+      "articles": 171,
+      "duplicates": 68,
+      "duplicate_rate": 0.3977,
+      "precision": {
+        "exact": 170,
+        "minute": 1,
+        "hour": 0,
+        "date_only": 0,
+        "unknown": 0
+      },
+      "precision_share": {
+        "exact": 0.9942,
+        "minute": 0.0058,
+        "hour": 0.0,
+        "date_only": 0.0,
+        "unknown": 0.0
+      },
+      "timezone_unknown": 0,
+      "status": {
+        "verified_pre_market": 112,
+        "published_before_cutoff": 0,
+        "collected_after_event": 59,
+        "unknown": 0
+      },
+      "verified_pre_market_share": 0.655,
+      "unknown_share": 0.0,
+      "post_event_share": 0.345,
+      "rejected_at_collection": {
+        "future": 0,
+        "missing_timestamp": 0,
+        "invalid": 0,
+        "duplicates_at_collection": 142,
+        "fetched": 245
+      },
+      "timestamp_quality": "Publisher RSS (Economic Times, Mint, Business Standard, CNBC-TV18): RFC-822 pubDate with explicit +0530 offset, to the second. Headline + description, no full text. Recent items only (no history).",
+      "documented_timezone": null
+    }
+  },
+  "by_company": {
+    "AXISBANK": {
+      "total": 869,
+      "verified_pre_market": 19,
+      "published_before_cutoff": 0,
+      "collected_after_event": 133,
+      "unknown": 717
+    },
+    "BHARTIARTL": {
+      "total": 1148,
+      "verified_pre_market": 9,
+      "published_before_cutoff": 0,
+      "collected_after_event": 112,
+      "unknown": 1027
+    },
+    "HDFCBANK": {
+      "total": 1584,
+      "verified_pre_market": 113,
+      "published_before_cutoff": 0,
+      "collected_after_event": 113,
+      "unknown": 1358
+    },
+    "ICICIBANK": {
+      "total": 918,
+      "verified_pre_market": 25,
+      "published_before_cutoff": 0,
+      "collected_after_event": 74,
+      "unknown": 819
+    },
+    "INFY": {
+      "total": 1357,
+      "verified_pre_market": 50,
+      "published_before_cutoff": 0,
+      "collected_after_event": 127,
+      "unknown": 1180
+    },
+    "ITC": {
+      "total": 348,
+      "verified_pre_market": 4,
+      "published_before_cutoff": 0,
+      "collected_after_event": 30,
+      "unknown": 314
+    },
+    "KOTAKBANK": {
+      "total": 558,
+      "verified_pre_market": 52,
+      "published_before_cutoff": 0,
+      "collected_after_event": 42,
+      "unknown": 464
+    },
+    "LT": {
+      "total": 650,
+      "verified_pre_market": 4,
+      "published_before_cutoff": 0,
+      "collected_after_event": 71,
+      "unknown": 575
+    },
+    "M&M": {
+      "total": 367,
+      "verified_pre_market": 18,
+      "published_before_cutoff": 0,
+      "collected_after_event": 30,
+      "unknown": 319
+    },
+    "MACRO": {
+      "total": 9411,
+      "verified_pre_market": 273,
+      "published_before_cutoff": 0,
+      "collected_after_event": 918,
+      "unknown": 8220
+    },
+    "RELIANCE": {
+      "total": 842,
+      "verified_pre_market": 12,
+      "published_before_cutoff": 0,
+      "collected_after_event": 76,
+      "unknown": 754
+    },
+    "SBIN": {
+      "total": 1182,
+      "verified_pre_market": 19,
+      "published_before_cutoff": 0,
+      "collected_after_event": 95,
+      "unknown": 1068
+    },
+    "TCS": {
+      "total": 1256,
+      "verified_pre_market": 35,
+      "published_before_cutoff": 0,
+      "collected_after_event": 77,
+      "unknown": 1144
+    }
+  },
+  "by_trading_date": [
+    {
+      "session": "2024-05-29",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 1,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-02-03",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-02-11",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-05-19",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 1,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-08-26",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 1,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-09-10",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 1,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-10-06",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 1,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-10-16",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 1,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-11-03",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 1,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-11-12",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-11-13",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-11-14",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-12-12",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-12-15",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2025-12-19",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-01-13",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-01-19",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-01-21",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-01-22",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-01-27",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-01-30",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-02-02",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 22,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-02-03",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-02-04",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-02-05",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-02-06",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-02-09",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-02-10",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-02-13",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-03-02",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-03-09",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-03-10",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 0,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-03-11",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 1,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-03-13",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 2,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-03-16",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 3,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-03-23",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 1,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-03-30",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 2,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-02",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 168,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-06",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 276,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-07",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 168,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-08",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 149,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-09",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 246,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-10",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 169,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-13",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 191,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-15",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 217,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-16",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 119,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-17",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 111,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-20",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 240,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-21",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 151,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-22",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 130,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-23",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 146,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-24",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 148,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-27",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 251,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-28",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 115,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-29",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 113,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-04-30",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 158,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-04",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 336,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-05",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 102,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-06",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 187,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-07",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 138,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-08",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 102,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-11",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 192,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-12",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 153,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-13",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 183,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-14",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 121,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-15",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 120,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-18",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 204,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-19",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 155,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-20",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 147,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-21",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 147,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-22",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 4,
+      "unknown": 123,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-25",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 6,
+      "unknown": 236,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-26",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 114,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-27",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 120,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-05-29",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 256,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-01",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 4,
+      "unknown": 210,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-02",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 4,
+      "unknown": 168,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-03",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 155,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-04",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 113,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-05",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 135,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-08",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 311,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-09",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 134,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-10",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 160,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-11",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 166,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-12",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 150,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-15",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 227,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-16",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 117,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-17",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 127,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-18",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 132,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-19",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 133,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-22",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 218,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-23",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 109,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-24",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 110,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-25",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 161,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-29",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 341,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-06-30",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 146,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-01",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 150,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-02",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 163,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-03",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 134,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-06",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 212,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-07",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 145,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-08",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 133,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-09",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 164,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-10",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 145,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-13",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 221,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-14",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 158,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-15",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 152,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-16",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 138,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-17",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 126,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-20",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 271,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-21",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 159,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-22",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 118,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-23",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 111,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-24",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 158,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-27",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 199,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-28",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 137,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-29",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 152,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-30",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 164,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-07-31",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 120,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-03",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 217,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-04",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 158,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-05",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 148,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-06",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 212,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-07",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 111,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-10",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 275,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-11",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 151,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-12",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 4,
+      "unknown": 148,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-13",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 180,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-14",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 4,
+      "unknown": 154,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-17",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 228,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-18",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 3,
+      "unknown": 131,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-19",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 131,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-20",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 125,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-21",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 156,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-24",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 235,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-25",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 149,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-26",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 157,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-27",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 103,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-28",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 4,
+      "unknown": 105,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-08-31",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 12,
+      "unknown": 263,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-01",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 1,
+      "unknown": 163,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-02",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 5,
+      "unknown": 199,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-03",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 133,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-04",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 146,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-07",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 12,
+      "unknown": 226,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-08",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 2,
+      "unknown": 131,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-09",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 114,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-10",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 5,
+      "unknown": 138,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-11",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 5,
+      "unknown": 120,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-15",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 19,
+      "unknown": 372,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-16",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 22,
+      "unknown": 169,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-17",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 17,
+      "unknown": 129,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-18",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 39,
+      "unknown": 131,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-21",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 78,
+      "unknown": 220,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-22",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 58,
+      "unknown": 104,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-23",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 99,
+      "unknown": 75,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-24",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 91,
+      "unknown": 25,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-25",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 124,
+      "unknown": 3,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-28",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 243,
+      "unknown": 19,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-29",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 245,
+      "unknown": 6,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-09-30",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 287,
+      "unknown": 4,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-10-01",
+      "verified_pre_market": 0,
+      "published_before_cutoff": 0,
+      "collected_after_event": 676,
+      "unknown": 5,
+      "live_prediction_generated": false
+    },
+    {
+      "session": "2026-10-05",
+      "verified_pre_market": 667,
+      "published_before_cutoff": 0,
+      "collected_after_event": 0,
+      "unknown": 0,
+      "live_prediction_generated": true
+    }
+  ]
+}

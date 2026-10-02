@@ -1,0 +1,96 @@
+# How strongly a macro news category's sentiment transmits to each sector.
+# Multiplier applied to the macro category score before it enters a company's prediction.
+#   1.0 = full transmission, 0.5 = half, negative = inverse.
+# These are configurable priors, NOT fitted values. System 3 reports whether they help.
+#
+# Event types from taxonomy.yaml (interest_rate ... market_wrap). The legacy category names
+# (macro_monetary, macro_growth, macro_fiscal, macro_global) are kept so that analyses stored by
+# older engine versions (lexicon-v2) still replay with their original sensitivities.
+
+default: 1.0
+
+sectors:
+  Financials:
+    interest_rate: 1.3
+    inflation: 1.2
+    gdp: 1.1
+    government_policy: 1.0
+    currency: 0.8
+    fund_flows: 1.0
+    commodity: 0.6
+    geopolitical: 0.8
+    market_wrap: 1.0
+    macro_monetary: 1.3
+    macro_growth: 1.1
+    macro_fiscal: 1.0
+    macro_global: 0.8
+  Information Technology:
+    interest_rate: 0.5
+    inflation: 0.5
+    gdp: 0.5
+    government_policy: 0.4
+    currency: 0.6
+    fund_flows: 0.8
+    commodity: 0.3
+    geopolitical: 0.6
+    market_wrap: 1.0
+    macro_monetary: 0.5
+    macro_growth: 0.5
+    macro_fiscal: 0.4
+    macro_global: 0.6
+  Energy:
+    interest_rate: 0.7
+    inflation: 0.7
+    gdp: 0.9
+    government_policy: 0.8
+    currency: 0.8
+    fund_flows: 1.0
+    commodity: 1.2
+    geopolitical: 1.1
+    market_wrap: 1.0
+    macro_monetary: 0.7
+    macro_growth: 0.9
+    macro_fiscal: 0.8
+    macro_global: 1.1
+  Telecommunication:
+    interest_rate: 0.8
+    inflation: 0.8
+    gdp: 0.8
+    government_policy: 0.9
+    currency: 0.5
+    fund_flows: 0.9
+    commodity: 0.4
+    geopolitical: 0.5
+    market_wrap: 1.0
+    macro_monetary: 0.8
+    macro_growth: 0.8
+    macro_fiscal: 0.9
+    macro_global: 0.5
+  Industrials:
+    interest_rate: 1.0
+    inflation: 0.9
+    gdp: 1.2
+    government_policy: 1.3
+    currency: 0.6
+    fund_flows: 1.0
+    commodity: 0.8
+    geopolitical: 0.7
+    market_wrap: 1.0
+    macro_monetary: 1.0
+    macro_growth: 1.2
+    macro_fiscal: 1.3
+    macro_global: 0.7
+  Consumer Staples:
+    interest_rate: 0.7
+    inflation: 0.9
+    gdp: 0.8
+    government_policy: 1.0
+    currency: 0.4
+    fund_flows: 0.8
+    commodity: 0.7
+    geopolitical: 0.5
+    market_wrap: 1.0
+    macro_monetary: 0.7
+    macro_growth: 0.8
+    macro_fiscal: 1.0
+    macro_global: 0.5

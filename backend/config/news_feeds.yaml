@@ -1,0 +1,23 @@
+# Official publisher RSS feeds used by the `publisher_rss` provider (no API key).
+#
+# These are syndication feeds published by the outlets themselves (no page scraping). Each item has
+# a headline, link, description and an RFC-822 pubDate with an explicit +0530 offset, i.e. exact
+# timestamps - unlike Google News RSS, whose older items are date-only.
+# Feeds only list RECENT items (roughly the last day), so this provider cannot backfill history; its
+# value is timestamp-accurate, verifiable pre-market news collected by the daily run.
+#
+# Checked 2026-10-02 from this machine: all feeds below returned current items. Excluded:
+# moneycontrol.com/rss/* (stale - newest item April 2024) and thehindubusinessline.com feeds
+# (connections dropped mid-transfer).
+
+feeds:
+  - {publisher: "The Economic Times", section: markets, url: "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms"}
+  - {publisher: "The Economic Times", section: economy, url: "https://economictimes.indiatimes.com/news/economy/rssfeeds/1373380680.cms"}
+  - {publisher: "The Economic Times", section: banking, url: "https://economictimes.indiatimes.com/industry/banking/finance/rssfeeds/13358259.cms"}
+  - {publisher: "Mint", section: markets, url: "https://www.livemint.com/rss/markets"}
+  - {publisher: "Mint", section: companies, url: "https://www.livemint.com/rss/companies"}
+  - {publisher: "Mint", section: economy, url: "https://www.livemint.com/rss/economy"}
+  - {publisher: "Business Standard", section: markets, url: "https://www.business-standard.com/rss/markets-106.rss"}
+  - {publisher: "Business Standard", section: companies, url: "https://www.business-standard.com/rss/companies-101.rss"}
+  - {publisher: "Business Standard", section: economy, url: "https://www.business-standard.com/rss/economy-102.rss"}
+  - {publisher: "CNBC-TV18", section: markets, url: "https://www.cnbctv18.com/commonfeeds/v1/cne/rss/market.xml"}

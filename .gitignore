@@ -1,0 +1,20 @@
+# secrets / local environment
+.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.log
+
+# local databases and backups (a slim deploy snapshot lives in deploy/)
+data/*.db
+data/*.db-journal
+
+# generated reports: only the curated reference reports are versioned
+reports/*
+!reports/bt-8705eab954.*
+!reports/bt-c719a57f88.*
+!reports/bt-8219b40a9c.*
+!reports/bt-e82b802213.*
+!reports/exp-28edef63.*
+!reports/audit-2026-10-02.*

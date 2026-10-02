@@ -1,0 +1,67 @@
+# Default parameter set (version "default-v3", see services/parameters.DEFAULT_VERSION).
+# Seeded into the `parameter_sets` table. It becomes ACTIVE only on a fresh database; when another
+# set is already active it is stored as a CANDIDATE and must be activated explicitly
+# (POST /parameters/{version}/activate). System 3 never edits active parameters either.
+#
+# Keys added after default-v2 have LEGACY defaults (services/parameters.LEGACY_DEFAULTS) so older
+# parameter sets replay exactly as before.
+
+system1:
+  min_relevance: 0.30            # articles below this relevance are ignored
+  recency_half_life_scale: 1.0   # multiplies every category half-life
+  shrinkage_k: 1.0               # evidence shrinkage: score *= W / (W + k)
+  corroboration_bonus: 0.15      # cluster weight *= 1 + bonus * ln(cluster_size)
+  max_lookback_days: 120         # ignore articles older than this at aggregation time
+  macro_weight_in_nifty: 0.40    # overall NIFTY = (1-w)*company_weighted + w*macro
+  neutral_band: 15               # |score| <= band is labelled NEUTRAL
+  price_report_weight: 0.0       # weight of headlines that only report a price move ("shares fall 3%").
+                                 # 0: they restate a move already in the previous close (legacy: 1.0)
+  baseline_days: 60              # relative sentiment: length of each entity's baseline window
+  min_baseline_n: 10             # fewer baseline stories -> relative sentiment is MISSING (not guessed)
+  source_reliability:            # 0..1, matched on the publisher/source name (case-insensitive substring)
+    default: 0.6
+    reuters: 0.95
+    bloomberg: 0.95
+    economic times: 0.85
+    the economic times: 0.85
+    mint: 0.85
+    livemint: 0.85
+    business standard: 0.85
+    moneycontrol: 0.8
+    financial express: 0.8
+    cnbc: 0.8
+    the hindu businessline: 0.8
+    ndtv profit: 0.75
+    press trust of india: 0.85
+    pti: 0.85
+
+system2:
+  model: factor                  # factor (formula below) | linear (fitted by System 3: `system2.linear`)
+  sentiment_input: relative      # relative (factor-v2: news vs the company's own baseline) | raw (factor-v1,
+                                 # the May-Sep 2026 model whose raw tone biased predictions UP)
+  w_company: 1.0                 # weight of company-specific sentiment
+  w_macro: 0.5                   # weight of (sector-adjusted) macro sentiment
+  w_nifty: 0.3                   # weight of beta * NIFTY company-weighted sentiment
+  sensitivity: 0.5               # expected move (in horizon sigmas) for a signal of 1.0
+  drift_weight: 0.0              # weight of trailing mean daily return. 0 by default: a stock's
+                                 # trailing drift is mostly noise and extrapolating it dominates
+                                 # long horizons. System 3 may tune it up if history supports it.
+  vol_lookback_days: 60          # trading days for daily volatility
+  drift_lookback_days: 250
+  beta_lookback_days: 250
+  min_history_days: 20           # fewer price observations -> prediction is MISSING
+  max_sigma_clip: 3.0            # predicted move is clipped to +/- this many horizon sigmas
+  neutral_threshold_sigma: 0.10  # |pred| below this fraction of horizon sigma -> NEUTRAL
+
+# Search space for the System 3 tuner (random search within these bounds).
+search_space:
+  system1.recency_half_life_scale: [0.25, 3.0]
+  system1.shrinkage_k: [0.2, 5.0]
+  system1.macro_weight_in_nifty: [0.0, 0.8]
+  system2.w_company: [0.0, 2.0]
+  system2.w_macro: [0.0, 1.5]
+  system2.w_nifty: [0.0, 1.5]
+  system2.sensitivity: [0.0, 1.5]
+  system2.drift_weight: [0.0, 1.0]
+  system1.price_report_weight: [0.0, 1.0]
+  system1.baseline_days: [20, 90]

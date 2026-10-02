@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NIFTY News Volatility</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1 12l4-5 3 3 6-8' fill='none' stroke='%232a78d6' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" aria-label="Main navigation">
+    <a class="brand" href="/" data-link>
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 12l4-5 3 3 6-8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <span><b>NIFTY News</b><small>Volatility Predictor</small></span>
+    </a>
+    <nav class="nav">
+      <a href="/" data-link data-route="/"><span class="nav-ico">◎</span><span><b>Overview</b><small>Status of all systems</small></span><span class="short">Home</span></a>
+      <a href="/system-1" data-link data-route="/system-1"><span class="nav-ico">1</span><span><b>News &amp; Sentiment</b><small>System 1 · collector</small></span><span class="short">News</span></a>
+      <a href="/system-2" data-link data-route="/system-2"><span class="nav-ico">2</span><span><b>Predictions</b><small>System 2 · deviation predictor</small></span><span class="short">Predict</span></a>
+      <a href="/system-3" data-link data-route="/system-3"><span class="nav-ico">3</span><span><b>Backtesting</b><small>System 3 · fine-tuner</small></span><span class="short">Backtest</span></a>
+      <a href="/settings" data-link data-route="/settings"><span class="nav-ico">⚙</span><span><b>Settings</b><small>Universe · models · jobs</small></span><span class="short">Settings</span></a>
+    </nav>
+    <div class="side-foot small" id="side-foot"></div>
+  </aside>
+  <div class="main">
+    <header class="pagehead">
+      <div>
+        <h1 id="page-title">Overview</h1>
+        <p id="page-sub" class="muted small"></p>
+      </div>
+      <div class="actions" id="page-actions"></div>
+    </header>
+    <div id="status" class="status small" role="status" aria-live="polite"></div>
+    <main id="view" tabindex="-1"></main>
+    <footer class="foot muted small">Research system. Predicted movements and estimated prices are model estimates, not guaranteed outcomes.
+      Historical performance does not guarantee future performance.</footer>
+  </div>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>
