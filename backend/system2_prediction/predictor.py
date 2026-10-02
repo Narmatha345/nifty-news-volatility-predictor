@@ -166,7 +166,8 @@ def persist_predictions(session: Session, rows: list[PredictionRow], as_of: date
     return run, objs
 
 
-def prediction_to_dict(p: Prediction) -> dict:
+def prediction_to_dict(p: Prediction, include_inputs: bool = True) -> dict:
+    """`include_inputs=False` omits the (large) per-prediction news snapshot; it stays stored."""
     return {
         "prediction_id": p.id, "run_id": p.run_id, "ticker": p.ticker, "company": p.company,
         "prediction_timestamp": iso_z(p.prediction_timestamp), "horizon_type": p.horizon_type,
@@ -180,7 +181,9 @@ def prediction_to_dict(p: Prediction) -> dict:
         "uncertainty_1sigma_pct": p.uncertainty_1sigma_pct, "status": p.status,
         "missing_reason": p.missing_reason, "features": p.features, "contributions_pct": p.contributions,
         "evidence_news_ids": p.evidence_news_ids, "model_version": p.model_version,
-        "data_quality_flag": p.data_quality_flag, "news_inputs": p.news_inputs,
+        "data_quality_flag": p.data_quality_flag,
+        "news_inputs": p.news_inputs if include_inputs else None,
+        "news_inputs_count": len(p.news_inputs or []),
         "prediction_cutoff": iso_z(p.run.prediction_cutoff) if p.run else None,
         "universe_version": p.run.universe_version if p.run else None,
         "availability_policy": p.run.availability_policy if p.run else None,

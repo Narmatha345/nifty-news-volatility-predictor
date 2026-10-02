@@ -38,7 +38,8 @@ def create_predictions(req: PredictRequest, db: Session = Depends(get_db)):
 @router.get("/predictions")
 def list_predictions(ticker: str | None = None, horizon_type: str | None = None, run_id: str | None = None,
                      target_date: str | None = None, include_backtest: bool = False, limit: int = 500,
-                     db: Session = Depends(get_db)):
+                     include_inputs: bool = False, db: Session = Depends(get_db)):
+    """`include_inputs=true` adds each prediction's stored news snapshot (large; for audits)."""
     q = select(Prediction).join(PredictionRun)
     if run_id is None and not include_backtest:
         latest = db.scalar(select(PredictionRun.id).where(PredictionRun.is_backtest.is_(False))
@@ -57,7 +58,7 @@ def list_predictions(ticker: str | None = None, horizon_type: str | None = None,
         q = q.where(Prediction.horizon_type == horizon_type)
     if target_date:
         q = q.where(Prediction.target_date == parse_date(target_date))
-    items = [prediction_to_dict(p) for p in db.scalars(q.order_by(Prediction.id).limit(limit))]
+    items = [prediction_to_dict(p, include_inputs) for p in db.scalars(q.order_by(Prediction.id).limit(limit))]
     return {"run_id": run_id, "count": len(items), "items": items,
             "disclaimer": "Model estimates for research; not guaranteed outcomes."}
 

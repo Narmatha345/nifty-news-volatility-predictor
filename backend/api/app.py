@@ -22,6 +22,7 @@ from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from backend.api import routes_app, routes_backtest, routes_meta, routes_news, routes_predictions
@@ -82,6 +83,9 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title="NIFTY News to Volatility Predictor", version="1.0.0", lifespan=lifespan,
               description="Research system: news sentiment -> predicted % movement (model estimates, "
                           "not guaranteed outcomes).")
+
+
+app.add_middleware(GZipMiddleware, minimum_size=1000)   # large JSON (predictions, reports) compresses ~5-10x
 
 
 @app.middleware("http")
